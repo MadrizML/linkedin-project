@@ -1,0 +1,11 @@
+
+# password file:
+
+linkedin_password.txt
+
+
+#checkpoints:
+
+.ipynb_checkpoints
+
+*/.ipynb_checkpoints/*
