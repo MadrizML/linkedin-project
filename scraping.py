@@ -96,7 +96,7 @@ job_search = driver.find_elements_by_class_name('jobs-search-box__text-input')
 
 # specify job title:
 time.sleep(1)
-job_title = input('Enter job title: ') or 'data analyst'
+job_title = input('Enter job title: ').replace(" ", "_") or 'data_analyst'
 
 # send_keys() to simulate key strokes
 job_search[0].send_keys(job_title)
@@ -131,7 +131,7 @@ job_search[2].send_keys(Keys.ENTER)
 # In[115]:
 
 
-time.sleep(2)
+time.sleep(3)
 
 
 # In[116]:
@@ -149,7 +149,7 @@ time.sleep(2)
 
 
 i = 0
-while i<15:
+while i<20:
     scroll = driver.find_element_by_class_name('job-card-search__link-wrapper').send_keys(Keys.END)
     time.sleep(1)
     i+=1
@@ -163,16 +163,16 @@ jobs_raw = driver.find_elements_by_class_name('job-card-search__link-wrapper')
 job_links = list(set([job.get_attribute('href')[:45] for job in jobs_raw]))
 
 
-# In[122]:
+# In[133]:
 
 
-print(f"You scraped {len(job_links)} job links.")
+print(f"You scraped {len(job_links)} {job_title.replace('_', ' ')} job links in {job_city}. It\'s gonna be stored in {job_title}_links.txt")
 
 
-# In[120]:
+# In[134]:
 
 
-with open("job_links.txt", "w") as output:
+with open(job_title + "_links.txt", "w") as output:
     output.write(str(job_links))
 
 
