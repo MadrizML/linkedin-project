@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[117]:
+# In[1]:
 
 
 # convert ipynb to script: $ jupyter nbconvert --to script scraping.ipynb
@@ -30,13 +30,13 @@ driver.get('https://www.linkedin.com')
 time.sleep(1)
 
 
-# In[118]:
+# In[2]:
 
 
 # recaptcha-checkbox-border
 
 
-# In[119]:
+# In[3]:
 
 
 # locate email form by_class_name
@@ -49,7 +49,7 @@ myemail = 'carlosmadrizd@gmail.com'
 username.send_keys(myemail)
 
 
-# In[120]:
+# In[4]:
 
 
 # locate password form by_class_name
@@ -61,7 +61,7 @@ mypass = open('linkedin_password.txt', 'r').read()
 password.send_keys(mypass)
 
 
-# In[121]:
+# In[5]:
 
 
 # locate submit button by_class_name
@@ -71,14 +71,14 @@ log_in_button = driver.find_element_by_class_name('sign-in-form__submit-btn')
 log_in_button.click()
 
 
-# In[122]:
+# In[6]:
 
 
 time.sleep(4)
 # click on jobs button
 
 
-# In[123]:
+# In[7]:
 
 
 # locate jobs button by_class_name
@@ -88,7 +88,7 @@ jobs_button = driver.find_element_by_id('jobs-nav-item')
 jobs_button.click()
 
 
-# In[124]:
+# In[8]:
 
 
 # locate job search box
@@ -108,7 +108,7 @@ job_search[0].send_keys(job_title)
 
 
 
-# In[125]:
+# In[9]:
 
 
 # locate job location box
@@ -127,25 +127,19 @@ job_city = 'Madrid'
 job_search[2].send_keys(job_city)
 
 
-# In[126]:
+# In[10]:
 
 
 # hit enter
 job_search[2].send_keys(Keys.ENTER)
 
 
-# In[ ]:
+# In[19]:
 
 
-job1 = driver.find_element_by_class_name('job-card-search__link-wrapper').get_attribute('href')
+job1 = driver.find_element_by_class_name('job-card-search__link-wrapper').get_attribute('href')[:45]
 
 print(job1)
-
-
-# In[ ]:
-
-
-
 
 
 # In[ ]:
