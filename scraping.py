@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[104]:
+# In[1]:
 
 
 # imports:
@@ -10,18 +10,19 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+import csv
 
 
-# In[105]:
+# In[2]:
 
 
 # download ChromeDriver (and unzip): https://sites.google.com/a/chromium.org/chromedriver/downloads
 
 
 wdpath = input("Enter chromedriver's path: ") or '/home/carlosmd14/LinkedIn_Project/chromedriver_linux64/chromedriver'
-    
 
-# specifies the path to the chromedriver.exe
+
+# specifies the path to the chromedriver executable file
 driver = webdriver.Chrome(wdpath)
 
 # driver.get method() will navigate to a page given by the URL address
@@ -30,13 +31,13 @@ driver.get('https://www.linkedin.com')
 time.sleep(1)
 
 
-# In[106]:
+# In[ ]:
 
 
 # recaptcha-checkbox-border
 
 
-# In[107]:
+# In[ ]:
 
 
 # locate email form by_class_name
@@ -49,7 +50,7 @@ my_email = input('Enter your email: ') or 'carlosmadrizd@gmail.com'
 username.send_keys(my_email)
 
 
-# In[108]:
+# In[ ]:
 
 
 # locate password form by_class_name
@@ -61,7 +62,7 @@ mypass = input('Enter your password: ') or open('linkedin_password.txt', 'r').re
 password.send_keys(mypass)
 
 
-# In[109]:
+# In[ ]:
 
 
 # locate submit button by_class_name
@@ -71,14 +72,14 @@ log_in_button = driver.find_element_by_class_name('sign-in-form__submit-btn')
 log_in_button.click()
 
 
-# In[110]:
+# In[ ]:
 
 
 time.sleep(2)
 # click on jobs button
 
 
-# In[111]:
+# In[ ]:
 
 
 # locate jobs button by_class_name
@@ -88,7 +89,7 @@ jobs_button = driver.find_element_by_id('jobs-nav-item')
 jobs_button.click()
 
 
-# In[112]:
+# In[ ]:
 
 
 # locate job search box
@@ -102,7 +103,7 @@ job_title = input('Enter job title: ').replace(" ", "_") or 'data_analyst'
 job_search[0].send_keys(job_title)
 
 
-# In[113]:
+# In[ ]:
 
 
 # locate job location box
@@ -121,20 +122,20 @@ job_city = input('Enter location: ') or 'Madrid'
 job_search[2].send_keys(job_city)
 
 
-# In[114]:
+# In[ ]:
 
 
 # hit enter
 job_search[2].send_keys(Keys.ENTER)
 
 
-# In[115]:
+# In[ ]:
 
 
 time.sleep(3)
 
 
-# In[116]:
+# In[ ]:
 
 
 # Hover
@@ -145,7 +146,7 @@ time.sleep(3)
 # hover.perform()
 
 
-# In[117]:
+# In[ ]:
 
 
 i = 0
@@ -155,7 +156,7 @@ while i<20:
     i+=1
 
 
-# In[118]:
+# In[ ]:
 
 
 jobs_raw = driver.find_elements_by_class_name('job-card-search__link-wrapper')
@@ -163,21 +164,22 @@ jobs_raw = driver.find_elements_by_class_name('job-card-search__link-wrapper')
 job_links = list(set([job.get_attribute('href')[:45] for job in jobs_raw]))
 
 
-# In[133]:
+# In[ ]:
 
 
-print(f"You scraped {len(job_links)} {job_title.replace('_', ' ')} job links in {job_city}. It\'s gonna be stored in {job_title}_links.txt")
-
-
-# In[134]:
-
-
-with open(job_title + "_links.txt", "w") as output:
-    output.write(str(job_links))
+print(f"You scraped {len(job_links)} {job_title.replace('_', ' ')} job links in {job_city}. "       f"It\'s gonna be stored in {job_title}_links.txt")
 
 
 # In[ ]:
 
 
+with open(job_title + "_links.csv", 'w', newline='') as myfile:
+     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+     wr.writerow(job_links)
 
+
+# In[ ]:
+
+
+# jupyter nbconvert --to script scraping.ipynb
 
