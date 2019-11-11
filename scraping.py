@@ -10,6 +10,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.options import Options
 from getpass import getpass
 import csv
 
@@ -19,12 +20,11 @@ import csv
 
 # download ChromeDriver (and unzip): https://sites.google.com/a/chromium.org/chromedriver/downloads
 
+chrome_options = Options()
+chrome_options.add_argument("--headless")
 
-wdpath = input("Enter chromedriver's path: ") or '/home/carlosmd14/LinkedIn_Project/chromedriver_linux64/chromedriver'
-
-
-# specifies the path to the chromedriver executable file
-driver = webdriver.Chrome(wdpath)
+# driver = webdriver.Chrome()
+driver = webdriver.Chrome(options=chrome_options)
 
 # driver.get method() will navigate to a page given by the URL address
 driver.get('https://www.linkedin.com')
@@ -44,7 +44,8 @@ time.sleep(1)
 # locate email form by_class_name
 username = driver.find_element_by_name('session_key')
 
-my_email = input('Enter your email: ') or 'carlosmadrizd@gmail.com'
+# my_email = input('Enter your email: ') or 'carlosmadrizd@gmail.com'
+my_email = 'carlosmadrizd@gmail.com'
 
 # send_keys() to simulate key strokes
 
@@ -57,7 +58,8 @@ username.send_keys(my_email)
 # locate password form by_class_name
 password = driver.find_element_by_name('session_password')
 
-mypass = getpass('Enter your password: ') or open('linkedin_password.txt', 'r').read()
+# mypass = getpass('Enter your password: ') or open('linkedin_password.txt', 'r').read()
+mypass = open('linkedin_password.txt', 'r').read()
 
 # send_keys() to simulate key strokes
 password.send_keys(mypass)
@@ -98,7 +100,7 @@ job_search = driver.find_elements_by_class_name('jobs-search-box__text-input')
 
 # specify job title:
 time.sleep(1)
-job_title = input('Enter job title: ').replace(" ", "_") or 'data_analyst'
+job_title = input('Enter job title (default is data_scientist): ').replace(" ", "_") or 'data_scientist'
 
 # send_keys() to simulate key strokes
 job_search[0].send_keys(job_title)
@@ -116,7 +118,7 @@ job_search = driver.find_elements_by_class_name('jobs-search-box__text-input')
 # job_search.send_keys(Keys.TAB)
 
 # specify job title:
-job_city = input('Enter location: ') or 'Madrid'
+job_city = input('Enter location (default is European Economic Area): ') or 'European Economic Area'
 
 # send_keys() to simulate key strokes
 # job_location.send_keys(job_city)
@@ -151,10 +153,13 @@ time.sleep(3)
 
 
 i = 0
-while i<20:
+
+scroll_limit = 65
+while i < scroll_limit:
     scroll = driver.find_element_by_class_name('job-card-search__link-wrapper').send_keys(Keys.END)
     time.sleep(1)
     i+=1
+    # print(i)
 
 
 # In[ ]:
@@ -174,7 +179,7 @@ print(f"You scraped {len(job_links)} {job_title.replace('_', ' ')} job links in 
 # In[ ]:
 
 
-with open(job_title + "_links.csv", 'w', newline='') as myfile:
+with open("job_links/" + job_title.replace(' ', '_') + "_" + job_city.replace(' ', '_') + "_links.csv", 'w', newline='') as myfile:
      wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
      wr.writerow(job_links)
 
