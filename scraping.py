@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 # imports:
@@ -10,10 +10,11 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from getpass import getpass
 import csv
 
 
-# In[2]:
+# In[ ]:
 
 
 # download ChromeDriver (and unzip): https://sites.google.com/a/chromium.org/chromedriver/downloads
@@ -56,7 +57,7 @@ username.send_keys(my_email)
 # locate password form by_class_name
 password = driver.find_element_by_name('session_password')
 
-mypass = input('Enter your password: ') or open('linkedin_password.txt', 'r').read()
+mypass = getpass('Enter your password: ') or open('linkedin_password.txt', 'r').read()
 
 # send_keys() to simulate key strokes
 password.send_keys(mypass)
