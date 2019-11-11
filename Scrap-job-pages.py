@@ -20,20 +20,23 @@ import random
 driver = webdriver.Chrome('/home/inrx/Desktop/chromedriver')
 
 
-# In[3]:
+# In[8]:
 
 
-path = '/home/inrx/Ironhack/TA/job-search/linkedin-project/data analyst_links.csv'
+path = '/home/inrx/Ironhack/TA/job-search/data_analyst_links.csv'
 
 with open(path, 'r') as f:
     reader = csv.reader(f)
     your_list = list(reader)
 
-page_list_raw = your_list[0]
-page_list = page_list_raw[1:10]
+
+# In[11]:
 
 
-# In[4]:
+page_list = your_list[0]
+
+
+# In[12]:
 
 
 # Create for loop to scrap data from job posting pages
