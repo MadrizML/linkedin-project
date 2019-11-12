@@ -13,6 +13,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from getpass import getpass
 import csv
+from tqdm import tqdm
 
 
 # In[ ]:
@@ -23,8 +24,8 @@ import csv
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 
-# driver = webdriver.Chrome()
-driver = webdriver.Chrome(options=chrome_options)
+driver = webdriver.Chrome()
+# driver = webdriver.Chrome(options=chrome_options)
 
 # driver.get method() will navigate to a page given by the URL address
 driver.get('https://www.linkedin.com')
@@ -45,7 +46,8 @@ time.sleep(1)
 username = driver.find_element_by_name('session_key')
 
 # my_email = input('Enter your email: ') or 'carlosmadrizd@gmail.com'
-my_email = 'carlosmadrizd@gmail.com'
+
+my_email = 'carlosmadrizd@gmail.com' if input('Are you Inês or Carlos?') == 'carlos' else 'ines.garcia263@gmail.com'
 
 # send_keys() to simulate key strokes
 
@@ -58,8 +60,8 @@ username.send_keys(my_email)
 # locate password form by_class_name
 password = driver.find_element_by_name('session_password')
 
-# mypass = getpass('Enter your password: ') or open('linkedin_password.txt', 'r').read()
-mypass = open('linkedin_password.txt', 'r').read()
+mypass = getpass('Enter your password: ')
+# mypass = open('linkedin_password.txt', 'r').read()
 
 # send_keys() to simulate key strokes
 password.send_keys(mypass)
@@ -155,10 +157,10 @@ time.sleep(3)
 i = 0
 
 scroll_limit = 65
-while i < scroll_limit:
+
+for i in tqdm(range(scroll_limit), desc='Scrolling down in the jobs search page', ncols=120 ,position=0):
     scroll = driver.find_element_by_class_name('job-card-search__link-wrapper').send_keys(Keys.END)
     time.sleep(1)
-    i+=1
     # print(i)
 
 
@@ -182,6 +184,12 @@ print(f"You scraped {len(job_links)} {job_title.replace('_', ' ')} job links in 
 with open("job_links/" + job_title.replace(' ', '_') + "_" + job_city.replace(' ', '_') + "_links.csv", 'w', newline='') as myfile:
      wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
      wr.writerow(job_links)
+
+
+# In[ ]:
+
+
+driver.quit()
 
 
 # In[ ]:
