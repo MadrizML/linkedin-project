@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 # imports:
@@ -13,7 +13,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from getpass import getpass
 import csv
-from tqdm import tqdm
+from tqdm import *
 
 
 # In[ ]:
@@ -154,11 +154,17 @@ time.sleep(3)
 # In[ ]:
 
 
+driver.find_elements
+
+
+# In[ ]:
+
+
 i = 0
 
-scroll_limit = 65
+scroll_limit = int(input('scroll limit')) or 65
 
-for i in tqdm(range(scroll_limit), desc='Scrolling down in the jobs search page', ncols=120 ,position=0):
+for i in tqdm(range(scroll_limit), desc='Scrolling down in the jobs search page'):
     scroll = driver.find_element_by_class_name('job-card-search__link-wrapper').send_keys(Keys.END)
     time.sleep(1)
     # print(i)
@@ -196,4 +202,11 @@ driver.quit()
 
 
 # jupyter nbconvert --to script scraping.ipynb
+
+
+# In[ ]:
+
+
+from logout_scrap_job_pages import scrap_job_pages
+scrap_job_pages()
 
