@@ -15,15 +15,16 @@ from tqdm import tqdm
 
 def get_job_links():
 
-
+    print('\nOpening driver')
     chrome_options = Options()
     chrome_options.add_argument("--headless")
-    
-    if input('Headless? (Y/n): ').lower() == 'n':
+
+    if input('\nHeadless? (Y/n): ').lower() == 'n':
         driver = webdriver.Chrome()  
     else:
         driver = webdriver.Chrome(options=chrome_options)
-
+    
+    
     # driver.get method() will navigate to a page given by the URL address
     driver.get('https://www.linkedin.com')
 
@@ -62,7 +63,9 @@ def get_job_links():
         
         mypass = getpass('\nEnter your password: ')
     
-
+  
+    print('\nLogging in...')
+    
     # send_keys() to simulate key strokes
     password.send_keys(mypass)
 
@@ -71,8 +74,6 @@ def get_job_links():
 
     # .click() to mimic button click
     log_in_button.click()
-
-    print('\nLogging in...')
     
     time.sleep(2)
     # click on jobs button
@@ -121,11 +122,11 @@ def get_job_links():
     time.sleep(3)
 
     try:
-        scroll_limit = int(input('\nScroll limit (default is 65): '))
+        scroll_limit = int(input('\nEnter scroll limit (default is 65): '))
     except:
         scroll_limit = 65
 
-    for i in tqdm(range(scroll_limit), desc='Scrolling down...', ncols=100, position=0, leave=True):
+    for i in tqdm(range(scroll_limit), desc='Scrolling down...', ncols=60, position=0, leave=True):
         
         driver.find_element_by_class_name('job-card-search__link-wrapper').send_keys(Keys.END)
         time.sleep(1)
@@ -134,11 +135,14 @@ def get_job_links():
 
     job_links = list(set([job.get_attribute('href')[:45] for job in jobs_raw]))
 
-    print(f"You scraped {len(job_links)} {job_title.replace('_', ' ')} job links in {job_city}. "           f"It\'s gonna be stored in {job_title}_links.csv")
+    print(f"\nYou scraped {len(job_links)} {job_title.replace('_', ' ')} job links in {job_city}. It\'s gonna be stored in {job_title}_links.csv")
 
     with open("job_links/" + job_title.replace(' ', '_') + "_" + job_city.replace(' ', '_') + "_links.csv", 'w', newline='') as myfile:
          wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
          wr.writerow(job_links)
 
+          
+    
+    print('\nClosing driver')
     driver.quit()
 
