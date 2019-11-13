@@ -34,7 +34,7 @@ def scrape_job_page(path):
         reader = csv.reader(f)
         your_list = list(reader)
 
-    page_list = your_list[0]
+    page_list = list(set(your_list[0]))
 
     # Create for loop to scrap data from job posting pages
     number = 0
