@@ -16,33 +16,30 @@ from tqdm import tqdm
 from tqdm import tqdm_gui
 
 
-def scrape_job_pages():
+    #path = 'job_links/data_analyst_European_Economic_Area_links.csv'
 
-
+    
+def scrape_job_page(path):
+    
+    print('\nOpening driver')
     chrome_options = Options()
     chrome_options.add_argument("--headless")
 
-    if input('Headless? (Y/n): ').lower() == 'n':
+    if input('\nHeadless? (Y/n): ').lower() == 'n':
         driver = webdriver.Chrome()  
     else:
         driver = webdriver.Chrome(options=chrome_options)
-
-    path = 'job_links/data_analyst_European_Economic_Area_links.csv'
-
-    
-    # def scrape (with specific path):
     
     with open(path, 'r') as f:
         reader = csv.reader(f)
         your_list = list(reader)
 
-    page_list_raw = your_list[0]
-    page_list = page_list_raw[156:]
+    page_list = your_list[0]
 
     # Create for loop to scrap data from job posting pages
     number = 0
 
-    for page in tqdm(page_list, desc='Scraping job details', ncols=80 ,position=0):
+    for page in tqdm(page_list, desc='Scraping links from ' + path, ncols=80 ,position=0):
         job_path = page
         driver.get(job_path)
 
@@ -104,7 +101,7 @@ def scrape_job_pages():
         function = criteria_1[0][5]
         ### Scrap the sector of the company
         sector = criteria_1[0][7]
-        sector_final = re.compile("(?=[A-Z])").split(sector)
+        sector_final = sector
 
 
         # Create a row with all the scrapped info to append to the .csv file
@@ -128,5 +125,8 @@ def scrape_job_pages():
             writer.writerow(row)
             number += 1
 
+    print('\nDone.')
+    
+    print('\nClosing driver')
     driver.quit()
 
