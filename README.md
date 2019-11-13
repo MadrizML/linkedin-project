@@ -3,12 +3,13 @@
 This project was created with the intent of understanding what are the main requirements for Data Analysts and Data Scientists jobs. To do that we created a crawler to scrap job pages from Linkedin and process the text, in order to achieve a report with the most frequent skills that are asked for each position. 
 
 **Contributors**
-[Carlos Madriz](https://github.com/carlosmd14/)
+[Carlos Madriz](https://github.com/carlosmd14/)  
 [Inês Garcia](https://github.com/Inrx)
 
 # Table of contents
 * [Getting Started](#getting-started)
 * [Prerequisites](#prerequisites)
+
 
 ## Getting Started
 
