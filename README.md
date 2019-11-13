@@ -1,8 +1,9 @@
 # Scraping Jobs from Linkedin
 
-This project was created with the intent of understanding what are the main requirements for Data Analysts and Data Scientists jobs. To do that we created a crawler to scrap job pages from Linkedin and process the text, in order to achieve a report with the most frequent skills that are asked for each position. 
+This project was created with the intent of understanding what are the main requirements for Data Analysts and Data Scientists jobs. To do that we created a crawler to scrap job pages from Linkedin and processed the text, in order to achieve a report with the most frequent skills that are asked for each position. 
 
 **Contributors**
+
 [Carlos Madriz](https://github.com/carlosmd14/)  
 [Inês Garcia](https://github.com/Inrx)
 
@@ -48,7 +49,7 @@ Give an example
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+Add additional notes about how to deploy this on a live system.
 
 
 ## Contributing
@@ -62,10 +63,10 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Acknowledgements
 
-* **David Craven** who wrote and [article](https://www.linkedin.com/pulse/how-easy-scraping-data-from-linkedin-profiles-david-craven/) on how to use Selenium to Srcap Linkedin, that was very helpful.
+* **David Craven** who wrote and [article](https://www.linkedin.com/pulse/how-easy-scraping-data-from-linkedin-profiles-david-craven/) on how to use Selenium to Scrap LinkedIn, that was very helpful.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 
