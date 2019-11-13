@@ -1,25 +1,37 @@
-def scrap_job_pages():
-    # import libraries
-    from selenium import webdriver
-    from parsel import Selector
-    from selenium.webdriver.chrome.options import Options
-    import time
-    import numpy as np
-    import pandas as pd
-    import csv
-    import random
-    import re
-    from tqdm import tqdm
-    from tqdm import tqdm_gui
+#!/usr/bin/env python
+# coding: utf-8
+
+
+# import libraries
+from selenium import webdriver
+from parsel import Selector
+from selenium.webdriver.chrome.options import Options
+import time
+import numpy as np
+import pandas as pd
+import csv
+import random
+import re
+from tqdm import tqdm
+from tqdm import tqdm_gui
+
+
+def scrape_job_pages():
+
 
     chrome_options = Options()
     chrome_options.add_argument("--headless")
 
-    driver = webdriver.Chrome(options=chrome_options)
-    #driver = webdriver.Chrome()
+    if input('Headless? (Y/n): ').lower() == 'n':
+        driver = webdriver.Chrome()  
+    else:
+        driver = webdriver.Chrome(options=chrome_options)
 
     path = 'job_links/data_analyst_European_Economic_Area_links.csv'
 
+    
+    # def scrape (with specific path):
+    
     with open(path, 'r') as f:
         reader = csv.reader(f)
         your_list = list(reader)
@@ -30,7 +42,7 @@ def scrap_job_pages():
     # Create for loop to scrap data from job posting pages
     number = 0
 
-    for page in tqdm(page_list, desc='Scraping job details'):
+    for page in tqdm(page_list, desc='Scraping job details', ncols=80 ,position=0):
         job_path = page
         driver.get(job_path)
 
@@ -62,7 +74,7 @@ def scrap_job_pages():
         # scrap number of applicants and post date
         applications_raw = driver.find_element_by_class_name("num-applicants__caption")
         applications_final = applications_raw.text
-        if applications_final == 'Seja um dos 25 primeiros candidatos':
+        if applications_final == 'Seja um dos 25 primeiros candidatos' or applications_final == 'Be among the first 25 applicants':
             applications_final = '<25'
 
 
