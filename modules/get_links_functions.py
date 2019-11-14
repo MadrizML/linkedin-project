@@ -12,6 +12,7 @@ from getpass import getpass
 import csv
 from tqdm import tqdm
 import math
+import os
 
 
 def get_job_links():
