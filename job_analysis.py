@@ -31,7 +31,7 @@ def main():
             print('Invalid input.')
             how_many = '0'
 
-    print('\nSuccesfully scraped the following path(s): ' + scraped_csv)
+    print('\nSuccesfully scraped the following path(s): ' + str(scraped_csv))
 
     
 
