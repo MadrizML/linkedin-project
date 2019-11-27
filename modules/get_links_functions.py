@@ -77,7 +77,7 @@ def get_job_links():
     # .click() to mimic button click
     log_in_button.click()
     
-    time.sleep(2)
+    time.sleep(2.06)
     # click on jobs button
 
     # locate jobs button by_class_name
@@ -88,12 +88,14 @@ def get_job_links():
     
     print('\nJobs page loading...')
     
+    time.sleep(0.97)
+    
     # locate job search box
     job_search = driver.find_elements_by_class_name('jobs-search-box__text-input')
 
     # specify job title:
         
-    time.sleep(1)
+    time.sleep(1.02)
         
     # clear existing string:
     job_search[2].clear()
@@ -117,7 +119,7 @@ def get_job_links():
 
     print('\nLoading jobs...')
     
-    time.sleep(2)
+    time.sleep(4)
 
     for i in range(2):
         
@@ -126,7 +128,7 @@ def get_job_links():
     
     try:
         
-        n_xpaths = math.ceil(int(driver.find_element_by_class_name("t-12").text.split()[0]) / 25)
+        n_xpaths = math.ceil(int(driver.find_element_by_class_name("t-12").text.split()[0].replace(',', '')) / 25)
         xpath_1 = "//button[@aria-label='Page "
         xpath_2 = "']/span[text()='"
         xpath_3 = "']"
