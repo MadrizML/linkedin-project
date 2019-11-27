@@ -25,8 +25,8 @@ def get_job_links():
         driver = webdriver.Chrome()  
     else:
         driver = webdriver.Chrome(options=chrome_options)
-    
-    
+
+
     # driver.get method() will navigate to a page given by the URL address
     driver.get('https://www.linkedin.com')
 
@@ -40,14 +40,14 @@ def get_job_links():
     # my_email = input('Enter your email: ') or 'carlosmadrizd@gmail.com'
 
     my_email = input('\nEmail (i for Inês and c for Carlos): ')
-    
+
     if my_email == 'c':
-        
+
         my_email = 'carlosmadrizd@gmail.com'
-        
-        
+
+
     elif my_email == 'i':
-        
+
         my_email = 'ines.garcia263@gmail.com'
 
     # send_keys() to simulate key strokes
@@ -58,16 +58,16 @@ def get_job_links():
     password = driver.find_element_by_name('session_password')
 
     try:
-        
+
         mypass = open('linkedin_password.txt', 'r').read()
-    
+
     except:
-        
+
         mypass = getpass('\nEnter your password: ')
-    
-  
+
+
     print('\nLogging in...')
-    
+
     # send_keys() to simulate key strokes
     password.send_keys(mypass)
 
@@ -76,7 +76,7 @@ def get_job_links():
 
     # .click() to mimic button click
     log_in_button.click()
-    
+
     time.sleep(2.06)
     # click on jobs button
 
@@ -85,32 +85,32 @@ def get_job_links():
 
     # .click() to mimic button click
     jobs_button.click()
-    
+
     print('\nJobs page loading...')
-    
+
     time.sleep(0.97)
-    
+
     # locate job search box
     job_search = driver.find_elements_by_class_name('jobs-search-box__text-input')
 
     # specify job title:
-        
+
     time.sleep(1.02)
-        
+
     # clear existing string:
     job_search[2].clear()
-    
+
     job_title = input('\nEnter job title (default is data_scientist): ').replace(" ", "_") or 'data_scientist'
 
     # send_keys() to simulate key strokes
     job_search[0].send_keys(job_title)
 
-#     # locate job location box
-#     job_search = driver.find_elements_by_class_name('jobs-search-box__text-input')
+    #     # locate job location box
+    #     job_search = driver.find_elements_by_class_name('jobs-search-box__text-input')
 
     # specify job title:
     job_city = input('\nEnter location (default is european economic area): ') or 'european economic area'
-    
+
     # send_keys() to simulate key strokes
     job_search[2].send_keys(job_city)
 
@@ -118,73 +118,82 @@ def get_job_links():
     job_search[2].send_keys(Keys.ENTER)
 
     print('\nLoading jobs...')
-    
+
     time.sleep(4)
 
     for i in range(2):
-        
+
         driver.find_element_by_class_name('job-card-search__link-wrapper').send_keys(Keys.END)
         time.sleep(1)
-    
+
+    n_xpaths = math.ceil(int(driver.find_element_by_class_name("t-12").text.split()[0].replace(',', '')))
+    xpath_1 = "//button[@aria-label='Page "
+    xpath_2 = "']/span[text()='"
+    xpath_3 = "']"
+
     try:
-        
-        n_xpaths = math.ceil(int(driver.find_element_by_class_name("t-12").text.split()[0].replace(',', '')) / 25)
-        xpath_1 = "//button[@aria-label='Page "
-        xpath_2 = "']/span[text()='"
-        xpath_3 = "']"
-        
+
+        page_button = driver.find_element_by_xpath(xpath_1 + str(2) + xpath_2 + str(2) + xpath_3)      
+
         n_links = 0
+
+        url = driver.current_url + '&start='
+
+        # job_links = []
         
-        for i in range(2, n_xpaths+1):
-                                          
+        # for i in tqdm(range(0, n_xpaths+1, 25), desc=f"\nPage {int(((i)/25)+1)}: {len(job_links)} links scraped ({n_links} total)", ncols=60, position=0, leave=True):
+
+        for i in range(0, n_xpaths+1, 25):
+
+            page_url = url + str(i)
+
+            driver.get(page_url)
+
+            time.sleep(1.32)
+
             for j in range(2):
-        
+
                 driver.find_element_by_class_name('job-card-search__link-wrapper').send_keys(Keys.END)
                 time.sleep(1)         
-        
+
             jobs_raw = driver.find_elements_by_class_name('job-card-search__link-wrapper')
 
             job_links = list(set([job.get_attribute('href')[:45] for job in jobs_raw]))
-            
+
             csv_path = "job_links/" + job_title.replace(' ', '_') + "_" + job_city.replace(' ', '_') + "_links.csv"
 
             n_links += len(job_links)
-            
-            print(f"\nPage {i-1}: {len(job_links)} links scraped ({n_links} total)")
-        
-            if i == 2:
-                  
+
+            print(f"\nPage {int(((i)/25)+1)}: {len(job_links)} links scraped ({n_links} total)")
+
+            if i == 0:
+
                 if not os.path.isfile(csv_path):
-                  
+
                     with open(csv_path, 'w', newline='') as myfile:
                         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
                         wr.writerow(job_links)
-                
+
                 else:
-                
+
                     with open(csv_path, 'a', newline='') as myfile:
                         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
                         wr.writerow(job_links)
-                   
+
             else:
-                  
+
                 with open(csv_path, 'a', newline='') as myfile:
                     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
                     wr.writerow(job_links)
 
-                    
-            page_button = driver.find_element_by_xpath(xpath_1 + str(i) + xpath_2 + str(i) + xpath_3)        
-            page_button.click()
-            
-            
         print(f"\nYou scraped {n_links} {job_title.replace('_', ' ')} job links in {job_city}. It\'s gonna be stored in {csv_path}")                  
-                  
-                  
+
+
         print('\nClosing driver')
         driver.quit()
-                  
+
     except:
-    
+
         try:
             scroll_limit = int(input('\nEnter scroll limit (default is 65): '))
         except:
@@ -199,7 +208,7 @@ def get_job_links():
         jobs_raw = driver.find_elements_by_class_name('job-card-search__link-wrapper')
 
         job_links = list(set([job.get_attribute('href')[:45] for job in jobs_raw]))
-              
+
         csv_path = "job_links/" + job_title.replace(' ', '_') + "_" + job_city.replace(' ', '_') + "_links.csv"
 
         print(f"\nYou scraped {len(job_links)} {job_title.replace('_', ' ')} job links in {job_city}. It\'s gonna be stored in {csv_path}")
@@ -211,4 +220,3 @@ def get_job_links():
 
         print('\nClosing driver')
         driver.quit()
-
