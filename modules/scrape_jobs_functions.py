@@ -30,11 +30,21 @@ def scrape_job_page(path):
     else:
         driver = webdriver.Chrome(options=chrome_options)
     
-    with open(path, 'r') as f:
-        reader = csv.reader(f)
-        your_list = list(reader)
+    with open(path, 'rt') as f:
+        files = f.read().split(",")
 
-    page_list = list(set(your_list[0]))
+    #, newline='\r\n'    
+
+    files = [file.strip("\"\"") for file in files]
+
+    page_list = []
+    for file in files:
+        if len(file) > 45:
+            for second in file.split("\n"):
+                page_list.append(second.strip("\"\""))
+        else:
+            page_list.append(file)
+    page_list = page_list[:-1]
 
     # Create for loop to scrap data from job posting pages
     number = 0
